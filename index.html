@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Burn Baby Burn</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="app.css">
+  </head>
+  <body>
+    <div class="container" style="padding-top:100px">
+      <div class="d-flex flex-row justify-content-center align-items-center light-background">
+        <div class="col">
+          <form class="form">
+            <label for="inlineFormInputAttendees">Number of Attendees</label>
+            <input type="number" class="form-control mb-2 mr-sm-2" id="inlineFormInputAttendees" value="12" min="2" max="200" step="1">
+
+            <label for="inlineFormInputHourlyRate">Average Hourly Cost</label>
+            <input type="number" class="form-control mb-2 mr-sm-2" id="inlineFormInputHourlyRate" value="48.08" min="1.00" max="100.00" step="0.01">
+
+            <button type="submit" class="btn btn-danger mb-2 start-button">Burn Baby Burn 🔥 🔥 🔥</button>
+            <button type="submit" class="btn btn-primary mb-2 stop-button" disabled>Stop!</button>
+          </form>
+        </div>
+        <div class="col text-center">
+          <div class="cost"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const SECONDS_PER_HOUR = 60.0 * 60.0;
+      var clockRunning = false;
+      var startTime;
+      var stopTime;
+
+      function hourlyRate () {
+        return parseFloat(document.querySelector("#inlineFormInputHourlyRate").value);
+      }
+
+      function attendeeNumber () {
+        return parseInt(document.querySelector("#inlineFormInputAttendees").value);
+      }
+
+      function burnPerSecond () {
+        return hourlyRate() / SECONDS_PER_HOUR;
+      }
+
+      function timeElaspedInSeconds (currentTime, pastTime) {
+        var diff = currentTime - pastTime;
+        return diff / 1000.0;
+      }
+
+      function amountBurned(elapsedTime) {
+        return attendeeNumber() * burnPerSecond() * elapsedTime;
+      }
+
+      function startTheClock () {
+        clockRunning = true;
+        startTime = new Date;
+        return;
+      }
+
+      function stopTheClock () {
+        clockRunning = false;
+      }
+
+      function disableButton (buttonTarget) {
+        return document.querySelector(buttonTarget).disabled = true;
+      }
+
+      function enableButton (buttonTarget) {
+        return document.querySelector(buttonTarget).disabled = false;
+      }
+
+      function renderDefault () {
+        const costHolder = document.querySelector('.cost')
+        var majorMinor = new Array("0", "00");
+        var html = `
+          <h1 class="cost-label">Cost</h1>
+          <h2 class="count">$${majorMinor[0]}.${majorMinor[1]}</h2>
+          `
+        costHolder.innerHTML = html;
+      }
+
+      function render () {
+        const costHolder = document.querySelector('.cost')
+
+        if (clockRunning) {
+          var elapsedTime = timeElaspedInSeconds(new Date, startTime);
+          var majorMinor = amountBurned(elapsedTime).toFixed(3).toString().split('.')
+        } else {
+          return;
+        }
+
+        var html = `
+          <h1 class="cost-label">Cost</h1>
+          <h2 class="count">$${majorMinor[0]}.${majorMinor[1]}</h2>
+          <small>${elapsedTime.toFixed(1)} seconds</small>
+          `
+
+        window.requestAnimationFrame(function(){
+          costHolder.innerHTML = html;
+        });
+      }
+
+      renderDefault();
+
+      var startButton = document.querySelector('.start-button');
+      var stopButton = document.querySelector('.stop-button');
+
+      stopButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        enableButton('.start-button')
+        disableButton('.stop-button');
+        stopTheClock();
+      })
+
+      startButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        disableButton('.start-button');
+        enableButton('.stop-button')
+        startTheClock();
+        setInterval(render, 100);
+      });
+    </script>
+  </body>
+</html>
+

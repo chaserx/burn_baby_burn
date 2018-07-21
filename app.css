@@ -1,0 +1,10 @@
+body,
+html {
+  background-image: url('greyson-joralemon-186357-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-color: #000;
+}
+.light-background {
+  background-color: rgba(255, 255, 255, 0.75);
+}
