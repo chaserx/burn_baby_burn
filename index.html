@@ -6,24 +6,40 @@
     <meta name="description" content="Made with redirected frustration during meetings. 👿">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="app.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
   </head>
   <body>
-    <div class="container" style="padding-top:100px">
-      <div class="d-flex flex-row justify-content-center align-items-center light-background">
-        <div class="col">
+    <img src="greyson-joralemon-186357-unsplash.jpg" class="bg-image" alt="">
+    <div class="container top100">
+      <div class="row">
+        <div class="col cover">
+          <h1 class="seventies-font">Meeting Inferno</h1>
           <form class="form">
-            <label for="inlineFormInputAttendees">Number of Attendees</label>
-            <input type="number" class="form-control mb-2 mr-sm-2" id="inlineFormInputAttendees" value="12" min="2" max="200" step="1">
+            <label for="inlineFormInputAttendees">Your vanity URL</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="user-addon"><i class="fas fa-users"></i></span>
+              </div>
+              <input type="number" class="form-control" id="inlineFormInputAttendees" aria-describedby="user-addon" value="12" min="2" max="200" step="1">
+            </div>
 
-            <label for="inlineFormInputHourlyRate">Average Hourly Cost</label>
-            <input type="number" class="form-control mb-2 mr-sm-2" id="inlineFormInputHourlyRate" value="48.08" min="1.00" max="100.00" step="0.01">
+            <!-- TODO(chaserx): need an info icon with popup dialog to explain theh default value used here -->
+            <label for="inlineFormInputHourlyRate">Average Hourly Wage</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="wage-addon"><i class="fas fa-dollar-sign"></i></span>
+              </div>
+              <input type="number" class="form-control" id="inlineFormInputHourlyRate" aria-describedby="wage-addon" value="38.46" min="1.00" max="100.00" step="0.01">
+            </div>
 
             <button type="submit" class="btn btn-danger mb-2 start-button">Burn Baby Burn 🔥 🔥 🔥</button>
             <button type="submit" class="btn btn-primary mb-2 stop-button" disabled>Stop!</button>
           </form>
         </div>
-        <div class="col text-center">
+        <div class="col text-center cover">
           <div class="cost"></div>
+          <!-- TODO(chaserx): it might be kinda fun to show some how much did this cost in 1977 when you cross certain amount boundaries. -->
         </div>
       </div>
     </div>
@@ -33,13 +49,23 @@
       var clockRunning = false;
       var startTime;
       var stopTime;
+      var interval;
+      var elapsedTime = 0.00;
+
+      function hourlyRateInput () {
+        return document.querySelector("#inlineFormInputHourlyRate");
+      }
+
+      function attendeeNumberInput () {
+        return document.querySelector("#inlineFormInputAttendees");
+      }
 
       function hourlyRate () {
-        return parseFloat(document.querySelector("#inlineFormInputHourlyRate").value);
+        return parseFloat(hourlyRateInput().value);
       }
 
       function attendeeNumber () {
-        return parseInt(document.querySelector("#inlineFormInputAttendees").value);
+        return parseInt(attendeeNumberInput().value);
       }
 
       function burnPerSecond () {
@@ -58,7 +84,6 @@
       function startTheClock () {
         clockRunning = true;
         startTime = new Date;
-        return;
       }
 
       function stopTheClock () {
@@ -66,36 +91,51 @@
       }
 
       function disableButton (buttonTarget) {
-        return document.querySelector(buttonTarget).disabled = true;
+        document.querySelector(buttonTarget).disabled = true;
       }
 
       function enableButton (buttonTarget) {
-        return document.querySelector(buttonTarget).disabled = false;
+        document.querySelector(buttonTarget).disabled = false;
       }
 
+      function disableInputs () {
+        hourlyRateInput().disabled = true;
+        attendeeNumberInput().disabled = true;
+      }
+
+      function enableInputs () {
+        hourlyRateInput().disabled = false;
+        attendeeNumberInput().disabled = false;
+      }
+
+      // NOTE(chaserx): it might be kind of neat to have a table of recent timings stored in localstorage; add to with a save button
+
       function renderDefault () {
-        const costHolder = document.querySelector('.cost')
-        var majorMinor = new Array("0", "00");
-        var html = `
-          <h1 class="cost-label">Cost</h1>
+        const costHolder = document.querySelector('.cost');
+        let majorMinor = new Array("0", "00");
+        let html = `
+          <h1 class="cost-label seventies-font">Cost</h1>
           <h2 class="count">$${majorMinor[0]}.${majorMinor[1]}</h2>
+          <small>$${burnPerSecond().toFixed(4)} / second</small>
           `
         costHolder.innerHTML = html;
       }
 
       function render () {
-        const costHolder = document.querySelector('.cost')
+        const costHolder = document.querySelector('.cost');
+        let majorMinor = new Array;
+        let currentTime;
+        // TODO(chaserx): need a little more detail here to make the start and stop action work correctly. Maybe like storing and using a stopTime; also maybe using the elapsedTime more globally
+        if (!clockRunning) return;
 
-        if (clockRunning) {
-          var elapsedTime = timeElaspedInSeconds(new Date, startTime);
-          var majorMinor = amountBurned(elapsedTime).toFixed(3).toString().split('.')
-        } else {
-          return;
-        }
+        elapsedTime = timeElaspedInSeconds(new Date, startTime);
+        majorMinor = amountBurned(elapsedTime).toFixed(3).toString().split('.')
 
-        var html = `
+        let html = `
           <h1 class="cost-label">Cost</h1>
           <h2 class="count">$${majorMinor[0]}.${majorMinor[1]}</h2>
+          <small>$${burnPerSecond().toFixed(4)} / second</small>
+          <br>
           <small>${elapsedTime.toFixed(1)} seconds</small>
           `
 
@@ -104,25 +144,30 @@
         });
       }
 
-      renderDefault();
+      // TODO(chaserx): a reset function that zeros out variables and renders the default would be a nice to have too. Reset button only available if the clock is not running.
 
-      var startButton = document.querySelector('.start-button');
-      var stopButton = document.querySelector('.stop-button');
+      const startButton = document.querySelector('.start-button');
+      const stopButton = document.querySelector('.stop-button');
 
       stopButton.addEventListener('click', function (event) {
         event.preventDefault();
         enableButton('.start-button')
         disableButton('.stop-button');
+        enableInputs();
         stopTheClock();
+        clearInterval(interval);
       })
 
       startButton.addEventListener('click', function (event) {
         event.preventDefault();
         disableButton('.start-button');
         enableButton('.stop-button')
+        disableInputs();
         startTheClock();
-        setInterval(render, 100);
+        interval = setInterval(render, 100);
       });
+
+      renderDefault();
     </script>
   </body>
 </html>
