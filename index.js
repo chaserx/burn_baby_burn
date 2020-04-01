@@ -1,13 +1,13 @@
 import Meeting from './lib/models/meeting.js';
 import MeetingTemplate from './lib/views/meeting.js';
 import PastMeetingsTemplate from './lib/views/pastMeetings.js'
-import Warehouse from "./lib/models/Warehouse.js";
+import Warehouse from './lib/models/Warehouse.js';
 
 document.onDOMContentLoaded = (() => {
     // page elements
-    const attendeeInput = document.getElementById("inlineFormInputAttendees");
-    const wageInput = document.getElementById('inlineFormInputHourlyRate');
-    const purposeInput = document.getElementById('inlineFormInputPurpose');
+    const attendeeInput = document.getElementById("inputAttendees");
+    const wageInput = document.getElementById('inputHourlyRate');
+    const purposeInput = document.getElementById('inputPurpose');
     const costHeader = document.getElementById('costHeader');
     const formInputs = document.getElementById('formInputs');
     const formButtons = document.getElementById('formButtons');
@@ -18,9 +18,7 @@ document.onDOMContentLoaded = (() => {
         if (clear) costHeader.classList.add('d-none');
     };
 
-    const updatePastMeetings = () => {
-        PastMeetingsTemplate(warehouse);
-    };
+    const updatePastMeetings = () => PastMeetingsTemplate(warehouse);
 
     // reset form & meeting
     const resetMeeting = () => {
