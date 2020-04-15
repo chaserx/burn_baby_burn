@@ -2,177 +2,87 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Burn Baby Burn! Meeting Inferno</title>
     <meta name="description" content="Made with redirected frustration during meetings. 👿">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="app.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
+    <script type="module" src="index.js"></script>
   </head>
-  <body>
-    <img src="greyson-joralemon-186357-unsplash.jpg" class="bg-image" alt="">
-    <div class="container top100">
+  <body class="py-5">
+    <div class="container cover">
       <div class="row">
-        <div class="col cover">
+        <div class="col-md-8 order-1 py-2">
           <h1 class="seventies-font">Meeting Inferno</h1>
-          <form class="form">
-            <label for="inlineFormInputAttendees">Number of Attendees</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="user-addon"><i class="fas fa-users"></i></span>
-              </div>
-              <input type="number" class="form-control" id="inlineFormInputAttendees" aria-describedby="user-addon" value="12" min="2" max="200" step="1">
-            </div>
-
-            <!-- TODO(chaserx): need an info icon with popup dialog to explain theh default value used here -->
-            <label for="inlineFormInputHourlyRate">Average Hourly Wage</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="wage-addon"><i class="fas fa-dollar-sign"></i></span>
-              </div>
-              <input type="number" class="form-control" id="inlineFormInputHourlyRate" aria-describedby="wage-addon" value="38.46" min="1.00" max="100.00" step="0.01">
-            </div>
-
-            <button type="submit" class="btn btn-danger mb-2 start-button">Burn Baby Burn 🔥 🔥 🔥</button>
-            <button type="submit" class="btn btn-primary mb-2 stop-button" disabled>Stop!</button>
-          </form>
-          <br>
-          <p>
-            <small>Made with frustration | <a href="https://github.com/chaserx/burn_baby_burn">Fork on GitHub </a></small>
-          </p>
         </div>
-        <div class="col text-center cover">
+        <div class="col-md-4 order-2 text-align-responsive py-2" id="costHeader">
+          <h1 class="seventies-font d-none">Cost</h1>
+        </div>
+        <div class="col-md-8 order-4 order-md-3 py-2">
+          <form class="form">
+            <div class="row">
+              <div class="col-sm-12 order-1 order-md-1" id="formInputs">
+                <div class="form-group">
+                  <label for="inputAttendees">Number of Attendees</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="user-addon"><i class="fas fa-users"></i></span>
+                    </div>
+                    <input type="number" class="form-control" id="inputAttendees" aria-describedby="user-addon" value="" min="2" max="200" step="1">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputHourlyRate">Average Hourly Wage</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="wage-addon"><i class="fas fa-dollar-sign"></i></span>
+                    </div>
+                    <input type="number" class="form-control" id="inputHourlyRate" aria-describedby="wage-addon" value="" min="1.00" max="100.00" step="1.00" title="Average wage of all meeting attendees: (wageAttendee1 + wageAttendee2 + wageAttendee3 + ...)/number attendees">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPurpose">Purpose</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="purpose-addon"><i class="fa fa-bullhorn"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="inputPurpose" aria-describedby="purposeHelpBlock" value="" placeholder="For Posterity" maxlength="40">
+                  </div>
+                  <small id="purposeHelpBlock" class="form-text text-muted">
+                    <span id="purposeRemainingCharacterCount">40</span> characters remaining
+                  </small>
+                </div>
+              </div>
+              <div class="col-sm-12 order-2 order-md-2" id="formButtons">
+                <button type="submit" class="btn btn-danger mb-2 start-button">Burn Baby Burn 🔥 🔥 🔥</button>
+                <button type="submit" class="btn btn-primary mb-2 stop-button" disabled>Stop!</button>
+                <button type="submit" class="btn btn-secondary mb-2 reset-button" title="Reset">Burn that mother down</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4 order-3 order-md-4 text-align-responsive py-2 d-none">
           <div class="cost"></div>
           <!-- TODO(chaserx): it might be kinda fun to show some how much did this cost in 1977 when you cross certain amount boundaries. -->
         </div>
       </div>
+      <div class="row">
+        <div class="col border-top py-2">
+          <h2 class="seventies-font">Past Meetings</h2>
+          <div class="py-2 past-meetings"></div>
+          <button type="submit" class="btn btn-primary clear-storage">Clear</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col border-top py-2">
+          <small>Made with frustration | <a href="https://github.com/chaserx/burn_baby_burn">Fork on GitHub </a></small>
+        </div>
+      </div>
     </div>
-
-    <script>
-      const SECONDS_PER_HOUR = 60.0 * 60.0;
-      var clockRunning = false;
-      var startTime;
-      var stopTime;
-      var interval;
-      var elapsedTime = 0.00;
-
-      function hourlyRateInput () {
-        return document.querySelector("#inlineFormInputHourlyRate");
-      }
-
-      function attendeeNumberInput () {
-        return document.querySelector("#inlineFormInputAttendees");
-      }
-
-      function hourlyRate () {
-        return parseFloat(hourlyRateInput().value);
-      }
-
-      function attendeeNumber () {
-        return parseInt(attendeeNumberInput().value);
-      }
-
-      function burnPerSecond () {
-        return hourlyRate() / SECONDS_PER_HOUR;
-      }
-
-      function timeElaspedInSeconds (currentTime, pastTime) {
-        var diff = currentTime - pastTime;
-        return diff / 1000.0;
-      }
-
-      function amountBurned(elapsedTime) {
-        return attendeeNumber() * burnPerSecond() * elapsedTime;
-      }
-
-      function startTheClock () {
-        clockRunning = true;
-        startTime = new Date;
-      }
-
-      function stopTheClock () {
-        clockRunning = false;
-      }
-
-      function disableButton (buttonTarget) {
-        document.querySelector(buttonTarget).disabled = true;
-      }
-
-      function enableButton (buttonTarget) {
-        document.querySelector(buttonTarget).disabled = false;
-      }
-
-      function disableInputs () {
-        hourlyRateInput().disabled = true;
-        attendeeNumberInput().disabled = true;
-      }
-
-      function enableInputs () {
-        hourlyRateInput().disabled = false;
-        attendeeNumberInput().disabled = false;
-      }
-
-      // NOTE(chaserx): it might be kind of neat to have a table of recent timings stored in localstorage; add to with a save button
-
-      function renderDefault () {
-        const costHolder = document.querySelector('.cost');
-        let majorMinor = new Array("0", "00");
-        let html = `
-          <h1 class="cost-label seventies-font">Cost</h1>
-          <h2 class="count">$${majorMinor[0]}.${majorMinor[1]}</h2>
-          <small>$${burnPerSecond().toFixed(4)} / second</small>
-          `
-        costHolder.innerHTML = html;
-      }
-
-      function render () {
-        const costHolder = document.querySelector('.cost');
-        let majorMinor = new Array;
-        let currentTime;
-        // TODO(chaserx): need a little more detail here to make the start and stop action work correctly. Maybe like storing and using a stopTime; also maybe using the elapsedTime more globally
-        if (!clockRunning) return;
-
-        elapsedTime = timeElaspedInSeconds(new Date, startTime);
-        majorMinor = amountBurned(elapsedTime).toFixed(3).toString().split('.')
-
-        let html = `
-          <h1 class="cost-label">Cost</h1>
-          <h2 class="count">$${majorMinor[0]}.${majorMinor[1]}</h2>
-          <small>$${burnPerSecond().toFixed(4)} / second</small>
-          <br>
-          <small>${elapsedTime.toFixed(1)} seconds</small>
-          `
-
-        window.requestAnimationFrame(function(){
-          costHolder.innerHTML = html;
-        });
-      }
-
-      // TODO(chaserx): a reset function that zeros out variables and renders the default would be a nice to have too. Reset button only available if the clock is not running.
-
-      const startButton = document.querySelector('.start-button');
-      const stopButton = document.querySelector('.stop-button');
-
-      stopButton.addEventListener('click', function (event) {
-        event.preventDefault();
-        enableButton('.start-button')
-        disableButton('.stop-button');
-        enableInputs();
-        stopTheClock();
-        clearInterval(interval);
-      })
-
-      startButton.addEventListener('click', function (event) {
-        event.preventDefault();
-        disableButton('.start-button');
-        enableButton('.stop-button')
-        disableInputs();
-        startTheClock();
-        interval = setInterval(render, 100);
-      });
-
-      renderDefault();
-    </script>
   </body>
 </html>
 
