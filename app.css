@@ -1,8 +1,11 @@
-html {
+html, body {
   background-color: #000;
+  height: 100%;
+  margin: 0;
 }
 body {
   background: url(greyson-joralemon-186357-unsplash.jpg) no-repeat 50% fixed;
+  background-size: cover;
 }
 .container {
   width: auto;
